@@ -6,9 +6,11 @@ namespace ST
 {
     public class AnimatorHandler : MonoBehaviour
     {
+        public PlayerManager playerManager;
+
         public Animator anim;
-        public InputHandler inputHandler;
-        public PlayerMovement playerMovement;
+        InputHandler inputHandler;
+        PlayerMovement playerMovement;
         int vertical;
         int horizontal;
 
@@ -17,13 +19,14 @@ namespace ST
         public void Initialize()
         {
             anim = GetComponent<Animator>();
+            playerManager = GetComponentInParent<PlayerManager>();
             inputHandler = GetComponentInParent<InputHandler>();
             playerMovement = GetComponentInParent<PlayerMovement>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
 
-        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
+        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
         {
             #region Vertical
             float v = 0;
@@ -75,6 +78,12 @@ namespace ST
             }
             #endregion
 
+            if (isSprinting)
+            {
+                v = 2;
+                h = horizontalMovement;
+            }
+
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
 
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
@@ -101,7 +110,7 @@ namespace ST
 
         private void OnAnimatorMove()
         {
-            if (inputHandler.isInteracting == false)
+            if (playerManager.isInteracting == false)
                 return;
 
             float delta = Time.deltaTime;
