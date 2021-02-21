@@ -13,6 +13,8 @@ namespace ST
 
         [Header("Player Flags")]
         public bool isSprinting;
+        public bool isInAir;
+        public bool isGrounded;
 
         CameraHandler cameraHandler;
 
@@ -21,6 +23,9 @@ namespace ST
         private void Awake()
         {
             cameraHandler = CameraHandler.singleton;
+
+            QualitySettings.vSyncCount = 0;  // VSync must be disabled
+            Application.targetFrameRate = 60;
         }
 
         void Start()
@@ -37,17 +42,21 @@ namespace ST
             isInteracting = anim.GetBool("isInteracting");
 
             inputHandler.TickInput(delta);
-
-            playerMovement.HandleMovement(delta);
             playerMovement.HandleRollingAndSprinting(delta);
-
-            float fixedDelta = Time.fixedDeltaTime;
 
             if (cameraHandler != null)
             {
-                cameraHandler.FollowTarget(fixedDelta);
-                cameraHandler.HandleCameraRotation(fixedDelta, inputHandler.mouseX, inputHandler.mouseY);
+                cameraHandler.FollowTarget(delta);
+                cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
             }
+        }
+
+        private void FixedUpdate()
+        {
+            float fixedDelta = Time.fixedDeltaTime;
+
+            playerMovement.HandleMovement(fixedDelta);
+            playerMovement.HandleFalling(fixedDelta, playerMovement.moveDirection);
         }
 
         private void LateUpdate()
@@ -56,6 +65,11 @@ namespace ST
             inputHandler.sprintFlag = false;
 
             isSprinting = inputHandler.b_Input;
+
+            if (isInAir)
+            {
+                playerMovement.inAirTimer = playerMovement.inAirTimer + Time.deltaTime;
+            }
         }
     }
 }

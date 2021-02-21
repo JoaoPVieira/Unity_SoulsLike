@@ -95,7 +95,7 @@ namespace ST
             anim.SetBool("isInteracting", isInteracting);
 
             Debug.Log("Animation: " + targetAnim);
-            anim.CrossFade(targetAnim, 0.2f);
+            anim.CrossFade(targetAnim, 0.01f);
         }
 
         public void CanRotate() 
@@ -112,7 +112,7 @@ namespace ST
         {
             if (playerManager.isInteracting == false)
                 return;
-
+               
             float delta = Time.deltaTime;
             playerMovement.rigidbody.drag = 0;
 

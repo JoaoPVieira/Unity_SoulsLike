@@ -159,10 +159,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""05c8f27a-bbdd-45e2-aa94-fffd411cca58"",
+                    ""id"": ""19891163-5716-4804-99a1-c94b65ae0a5c"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": ""NormalizeVector2,ScaleVector2"",
                     ""groups"": """",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
