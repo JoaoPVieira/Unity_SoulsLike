@@ -16,7 +16,9 @@ namespace ST
         [HideInInspector]
         public AnimatorHandler animatorHandler;
 
+#pragma warning disable CS0109 // Member does not hide an inherited member; new keyword is not required
         public new Rigidbody rigidbody;
+#pragma warning restore CS0109 // Member does not hide an inherited member; new keyword is not required
         public GameObject normalCamera;
 
         [Header("Ground and Air Detection Stats")]
