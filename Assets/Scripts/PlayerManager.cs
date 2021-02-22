@@ -63,6 +63,8 @@ namespace ST
         {
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
+            inputHandler.r1_Input = false;
+            inputHandler.r2_Input = false;
 
             isSprinting = inputHandler.b_Input;
 
