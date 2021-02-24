@@ -95,7 +95,8 @@ namespace ST
             anim.SetBool("isInteracting", isInteracting);
 
             Debug.Log("Animation: " + targetAnim);
-            anim.CrossFade(targetAnim, 0.01f);
+            //Might need a check for falling!
+            anim.CrossFade(targetAnim, 0.2f);
         }
 
         public void CanRotate() 
@@ -106,6 +107,16 @@ namespace ST
         public void StopRotation()
         {
             canRotate = false;
+        }
+
+        public void EnableCombo()
+        {
+            anim.SetBool("canDoCombo", true);
+        }
+
+        public void DisableCombo()
+        {
+            anim.SetBool("canDoCombo", false);
         }
 
         private void OnAnimatorMove()

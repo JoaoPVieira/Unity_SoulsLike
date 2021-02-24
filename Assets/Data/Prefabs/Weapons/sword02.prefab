@@ -74,6 +74,8 @@ GameObject:
   - component: {fileID: 1123341345790295629}
   - component: {fileID: 6677255413858894516}
   - component: {fileID: 512600365213039072}
+  - component: {fileID: 4465400566179893573}
+  - component: {fileID: 8695163630029600038}
   m_Layer: 0
   m_Name: sword02
   m_TagString: Untagged
@@ -159,3 +161,28 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!65 &4465400566179893573
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4942338196396521064}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.07105526, y: 0.21339549, z: 0.69009537}
+  m_Center: {x: 0.00000023586608, y: -0.002868712, z: -0.37037137}
+--- !u!114 &8695163630029600038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4942338196396521064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e86be2e28be8ce489e8fa1405ad83ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

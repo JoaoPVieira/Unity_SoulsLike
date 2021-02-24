@@ -15,6 +15,7 @@ namespace ST
         public bool isSprinting;
         public bool isInAir;
         public bool isGrounded;
+        public bool canDoCombo;
 
         CameraHandler cameraHandler;
 
@@ -22,7 +23,7 @@ namespace ST
 
         private void Awake()
         {
-            cameraHandler = CameraHandler.singleton;
+            cameraHandler = FindObjectOfType<CameraHandler>();
 
             QualitySettings.vSyncCount = 0;  // VSync must be disabled
             Application.targetFrameRate = 60;
@@ -40,6 +41,7 @@ namespace ST
             float delta = Time.deltaTime;
 
             isInteracting = anim.GetBool("isInteracting");
+            canDoCombo = anim.GetBool("canDoCombo");
 
             inputHandler.TickInput(delta);
             playerMovement.HandleRollingAndSprinting(delta);
@@ -65,6 +67,10 @@ namespace ST
             inputHandler.sprintFlag = false;
             inputHandler.r1_Input = false;
             inputHandler.r2_Input = false;
+            inputHandler.d_Pad_Up = false;
+            inputHandler.d_Pad_Down = false;
+            inputHandler.d_Pad_Left = false;
+            inputHandler.d_Pad_Right = false;
 
             isSprinting = inputHandler.b_Input;
 
