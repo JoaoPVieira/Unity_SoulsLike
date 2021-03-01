@@ -13,6 +13,7 @@ namespace ST
         public float mouseY;
 
         public bool b_Input;
+        public bool a_Input;
         public bool r1_Input;
         public bool r2_Input;
         public bool d_Pad_Up;
@@ -63,6 +64,7 @@ namespace ST
             HandleRollInput(delta);
             HandleAttackInput(delta);
             HandleQuickSlotsInput();
+            HandleInteractingButtonInput();
         }
 
         private void MoveInput(float delta)
@@ -141,6 +143,11 @@ namespace ST
             {
                 playerInventory.ChangeLeftWeapon();
             }
+        }
+
+        private void HandleInteractingButtonInput()
+        {
+            inputActions.PlayerActions.Confirm.performed += i => a_Input = true;
         }
     }
 }

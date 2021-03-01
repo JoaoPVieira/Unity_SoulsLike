@@ -51,6 +51,8 @@ namespace ST
                 cameraHandler.FollowTarget(delta);
                 cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
             }
+
+            CheckForInteractableObject();
         }
 
         private void FixedUpdate()
@@ -63,6 +65,7 @@ namespace ST
 
         private void LateUpdate()
         {
+            inputHandler.a_Input = false;
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
             inputHandler.r1_Input = false;
@@ -77,6 +80,31 @@ namespace ST
             if (isInAir)
             {
                 playerMovement.inAirTimer = playerMovement.inAirTimer + Time.deltaTime;
+            }
+        }
+
+        public void CheckForInteractableObject()
+        {
+            RaycastHit hit;
+
+            if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
+            {
+                if (hit.collider.tag == "Interactable")
+                {
+                    Interactable interactableObject = hit.collider.GetComponent<Interactable>();
+
+                    if (interactableObject != null)
+                    {
+                        string interactableText = interactableObject.interactableText;
+                        //SET THE UI TEXT TO THE INTERACTABLE OBJECT'S TEXT
+                        //SET THE TEXT POP UP TO TRUE
+
+                        if (inputHandler.a_Input)
+                        {
+                            hit.collider.GetComponent<Interactable>().Interact(this);
+                        }
+                    }
+                }
             }
         }
     }

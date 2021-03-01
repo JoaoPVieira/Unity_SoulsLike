@@ -21,6 +21,10 @@ namespace ST
         public string OH_Light_Attack_2;
         public string OH_Light_Attack_3;
 
+        [Header("Stamina Costs")]
+        public int baseStamina;
+        public float lightAttackMultiplier;
+        public float heavyAttackMultiplier;
 
     }
 }
