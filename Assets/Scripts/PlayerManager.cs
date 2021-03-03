@@ -8,6 +8,12 @@ namespace ST
     {
         InputHandler inputHandler;
         Animator anim;
+        CameraHandler cameraHandler;
+        PlayerMovement playerMovement;
+        InteractableUI interactableUI;
+
+        public GameObject interactableUIGameObject;
+        public GameObject itemInteractableGameObject;
 
         public bool isInteracting;
 
@@ -16,10 +22,6 @@ namespace ST
         public bool isInAir;
         public bool isGrounded;
         public bool canDoCombo;
-
-        CameraHandler cameraHandler;
-
-        PlayerMovement playerMovement;
 
         private void Awake()
         {
@@ -34,6 +36,7 @@ namespace ST
             inputHandler = GetComponent<InputHandler>();
             anim = GetComponentInChildren<Animator>();
             playerMovement = GetComponent<PlayerMovement>();
+            interactableUI = FindObjectOfType<InteractableUI>();
         }
 
         void Update()
@@ -86,8 +89,7 @@ namespace ST
         public void CheckForInteractableObject()
         {
             RaycastHit hit;
-
-            if (Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
+            if (Physics.SphereCast(transform.position, 1f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
             {
                 if (hit.collider.tag == "Interactable")
                 {
@@ -96,14 +98,26 @@ namespace ST
                     if (interactableObject != null)
                     {
                         string interactableText = interactableObject.interactableText;
-                        //SET THE UI TEXT TO THE INTERACTABLE OBJECT'S TEXT
-                        //SET THE TEXT POP UP TO TRUE
+                        interactableUI.interactableText.text = interactableText;
+                        interactableUIGameObject.SetActive(true);
 
                         if (inputHandler.a_Input)
                         {
                             hit.collider.GetComponent<Interactable>().Interact(this);
                         }
                     }
+                }
+            }
+            else 
+            { 
+                if (interactableUIGameObject != null)
+                {
+                    interactableUIGameObject.SetActive(false);
+                }
+
+                if (itemInteractableGameObject != null && inputHandler.a_Input)
+                {
+                    itemInteractableGameObject.SetActive(false);
                 }
             }
         }
