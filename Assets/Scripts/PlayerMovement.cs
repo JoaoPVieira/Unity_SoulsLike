@@ -159,7 +159,7 @@ namespace ST
             if (playerManager.isInAir)
             {
                 rigidbody.AddForce(-Vector3.up * fallingSpeed);
-                rigidbody.AddForce(moveDirection * fallingSpeed / 20f);
+                rigidbody.AddForce(moveDirection * fallingSpeed / 10f);
             }
 
             Vector3 dir = moveDirection;
@@ -228,6 +228,29 @@ namespace ST
                 }
             }
 
+        }
+
+        public void HandleJumping()
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            if (inputHandler.jump_Input)
+            {
+                Debug.Log("Jump Input Passed");
+                Debug.Log("Move Amount check");
+                if (inputHandler.moveAmount > 0)
+                {
+                    Debug.Log("Jump Starting");
+
+                    moveDirection = cameraObject.forward * inputHandler.vertical;
+                    moveDirection += cameraObject.right * inputHandler.horizontal;
+                    animatorHandler.PlayTargetAnimation("Jump", true);
+                    moveDirection.y = 0;
+                    Quaternion jumpRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = jumpRotation;
+                }
+            }
         }
 
         #endregion

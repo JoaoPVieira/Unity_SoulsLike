@@ -45,6 +45,7 @@ namespace ST
 
             isInteracting = anim.GetBool("isInteracting");
             canDoCombo = anim.GetBool("canDoCombo");
+            anim.SetBool("isInAir", isInAir);
 
             inputHandler.TickInput(delta);
             playerMovement.HandleRollingAndSprinting(delta);
@@ -53,6 +54,7 @@ namespace ST
             {
                 cameraHandler.FollowTarget(delta);
                 cameraHandler.HandleCameraRotation(delta, inputHandler.mouseX, inputHandler.mouseY);
+                playerMovement.HandleJumping();
             }
 
             CheckForInteractableObject();
@@ -64,19 +66,21 @@ namespace ST
 
             playerMovement.HandleMovement(fixedDelta);
             playerMovement.HandleFalling(fixedDelta, playerMovement.moveDirection);
+            
         }
 
         private void LateUpdate()
         {
             inputHandler.a_Input = false;
             inputHandler.rollFlag = false;
-            inputHandler.sprintFlag = false;
             inputHandler.r1_Input = false;
             inputHandler.r2_Input = false;
             inputHandler.d_Pad_Up = false;
             inputHandler.d_Pad_Down = false;
             inputHandler.d_Pad_Left = false;
             inputHandler.d_Pad_Right = false;
+            inputHandler.jump_Input = false;
+            inputHandler.inventory_Input = false;
 
             isSprinting = inputHandler.b_Input;
 

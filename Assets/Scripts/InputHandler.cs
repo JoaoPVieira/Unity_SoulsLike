@@ -16,20 +16,25 @@ namespace ST
         public bool a_Input;
         public bool r1_Input;
         public bool r2_Input;
+        public bool jump_Input;
+        public bool inventory_Input;
+
         public bool d_Pad_Up;
         public bool d_Pad_Down;
         public bool d_Pad_Left;
         public bool d_Pad_Right;
-
+        
         public bool rollFlag;
         public bool sprintFlag;
         public bool comboFlag;
+        public bool inventoryFlag;
         public float rollInputTimer;
 
         PlayerControls inputActions;
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
+        UIManager uiManager;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -39,6 +44,7 @@ namespace ST
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            uiManager = FindObjectOfType<UIManager>();
         }
 
         public void OnEnable()
@@ -48,6 +54,14 @@ namespace ST
                 inputActions = new PlayerControls();
                 inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+
+                inputActions.PlayerActions.Light.performed += i => r1_Input = true;
+                inputActions.PlayerActions.Heavy.performed += i => r2_Input = true;
+                inputActions.PlayerMenu.DPadRight.performed += i => d_Pad_Right = true;
+                inputActions.PlayerMenu.DPadLeft.performed += i => d_Pad_Left = true;
+                inputActions.PlayerActions.Confirm.performed += i => a_Input = true;
+                inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
+                inputActions.PlayerActions.Inventory.performed += i => inventory_Input = true;
             }
 
             inputActions.Enable();
@@ -64,7 +78,7 @@ namespace ST
             HandleRollInput(delta);
             HandleAttackInput(delta);
             HandleQuickSlotsInput();
-            HandleInteractingButtonInput();
+            HandleInventoryInput();
         }
 
         private void MoveInput(float delta)
@@ -79,6 +93,7 @@ namespace ST
         private void HandleRollInput(float delta)
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            sprintFlag = b_Input;
 
             if (b_Input)
             {
@@ -99,9 +114,6 @@ namespace ST
 
         private void HandleAttackInput(float delta)
         {
-            inputActions.PlayerActions.Light.performed += i => r1_Input = true;
-            inputActions.PlayerActions.Heavy.performed += i => r2_Input = true; 
-
             if (r1_Input)
             {
                 if (playerManager.canDoCombo)
@@ -132,9 +144,6 @@ namespace ST
 
         private void HandleQuickSlotsInput()
         {
-            inputActions.PlayerMenu.DPadRight.performed += i => d_Pad_Right = true;
-            inputActions.PlayerMenu.DPadLeft.performed += i => d_Pad_Left = true;
-
             if (d_Pad_Right)
             {
                 playerInventory.ChangeRightWeapon();
@@ -145,9 +154,25 @@ namespace ST
             }
         }
 
-        private void HandleInteractingButtonInput()
+        private void HandleInventoryInput()
         {
-            inputActions.PlayerActions.Confirm.performed += i => a_Input = true;
+            if (inventory_Input)
+            {
+                inventoryFlag = !inventoryFlag;
+
+                if (inventoryFlag)
+                {
+                    uiManager.OpenSelectWindow();
+                    uiManager.UpdateUI();
+                    uiManager.hudWindow.SetActive(false);
+                }
+                else 
+                {
+                    uiManager.CloseSelectWindow();
+                    uiManager.CloseAllInventoryWindows();
+                    uiManager.hudWindow.SetActive(true);
+                }
+            }
         }
     }
 }
