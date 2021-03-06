@@ -96,8 +96,10 @@ namespace ST
 
             Debug.Log("Animation: " + targetAnim);
             //Might need a check for falling!
-            if (targetAnim != "Landing")
+            if (targetAnim != "Land")
                 anim.CrossFade(targetAnim, 0.2f);
+            else
+                anim.CrossFade(targetAnim, 0.01f);
         }
 
         public void CanRotate() 

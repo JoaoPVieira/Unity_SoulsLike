@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ST
 {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : CharacterManager
     {
         InputHandler inputHandler;
         Animator anim;
@@ -66,7 +66,6 @@ namespace ST
 
             playerMovement.HandleMovement(fixedDelta);
             playerMovement.HandleFalling(fixedDelta, playerMovement.moveDirection);
-            
         }
 
         private void LateUpdate()

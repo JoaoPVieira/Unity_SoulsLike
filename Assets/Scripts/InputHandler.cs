@@ -18,6 +18,7 @@ namespace ST
         public bool r2_Input;
         public bool jump_Input;
         public bool inventory_Input;
+        public bool lockOn_Input;
 
         public bool d_Pad_Up;
         public bool d_Pad_Down;
@@ -28,6 +29,7 @@ namespace ST
         public bool sprintFlag;
         public bool comboFlag;
         public bool inventoryFlag;
+        public bool lockOnFlag;
         public float rollInputTimer;
 
         PlayerControls inputActions;
@@ -35,6 +37,7 @@ namespace ST
         PlayerInventory playerInventory;
         PlayerManager playerManager;
         UIManager uiManager;
+        CameraHandler cameraHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -44,6 +47,7 @@ namespace ST
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            cameraHandler = FindObjectOfType<CameraHandler>();
             uiManager = FindObjectOfType<UIManager>();
         }
 
@@ -57,11 +61,13 @@ namespace ST
 
                 inputActions.PlayerActions.Light.performed += i => r1_Input = true;
                 inputActions.PlayerActions.Heavy.performed += i => r2_Input = true;
-                inputActions.PlayerMenu.DPadRight.performed += i => d_Pad_Right = true;
-                inputActions.PlayerMenu.DPadLeft.performed += i => d_Pad_Left = true;
                 inputActions.PlayerActions.Confirm.performed += i => a_Input = true;
                 inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
                 inputActions.PlayerActions.Inventory.performed += i => inventory_Input = true;
+                inputActions.PlayerActions.LockOn.performed += i => lockOn_Input = true;
+
+                inputActions.PlayerMenu.DPadRight.performed += i => d_Pad_Right = true;
+                inputActions.PlayerMenu.DPadLeft.performed += i => d_Pad_Left = true;
             }
 
             inputActions.Enable();
@@ -79,6 +85,7 @@ namespace ST
             HandleAttackInput(delta);
             HandleQuickSlotsInput();
             HandleInventoryInput();
+            HandleLockOnInput();
         }
 
         private void MoveInput(float delta)
@@ -172,6 +179,29 @@ namespace ST
                     uiManager.CloseAllInventoryWindows();
                     uiManager.hudWindow.SetActive(true);
                 }
+            }
+        }
+
+        private void HandleLockOnInput()
+        {
+            if (lockOn_Input && !lockOnFlag)
+            {
+                Debug.Log("Handling Lock On...");
+                lockOn_Input = false;
+                cameraHandler.HandleLockOn();
+
+                if (cameraHandler.nearestLockOnTarget != null)
+                {
+                    Debug.Log("Found Nearest Lock On Target");
+                    cameraHandler.currentLockOnTarget = cameraHandler.nearestLockOnTarget;
+                    lockOnFlag = true;
+                }
+            }
+            else if (lockOn_Input && lockOnFlag)
+            {
+                lockOn_Input = false;
+                lockOnFlag = false;
+                cameraHandler.ClearLockOnTargets();
             }
         }
     }
