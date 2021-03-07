@@ -19,6 +19,8 @@ namespace ST
         public bool jump_Input;
         public bool inventory_Input;
         public bool lockOn_Input;
+        public bool rightStick_Right_Input;
+        public bool rightStick_Left_Input;
 
         public bool d_Pad_Up;
         public bool d_Pad_Down;
@@ -68,6 +70,9 @@ namespace ST
 
                 inputActions.PlayerMenu.DPadRight.performed += i => d_Pad_Right = true;
                 inputActions.PlayerMenu.DPadLeft.performed += i => d_Pad_Left = true;
+
+                inputActions.PlayerMovement.LockOnTargetRight.performed += i => rightStick_Right_Input = true;
+                inputActions.PlayerMovement.LockOnTargetLeft.performed += i => rightStick_Left_Input = true;
             }
 
             inputActions.Enable();
@@ -203,6 +208,28 @@ namespace ST
                 lockOnFlag = false;
                 cameraHandler.ClearLockOnTargets();
             }
+
+            if (lockOnFlag && rightStick_Left_Input)
+            {
+                rightStick_Left_Input = false;
+                cameraHandler.HandleLockOn();
+                if (cameraHandler.leftLockTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.leftLockTarget;
+                }
+            }
+            else if (lockOnFlag && rightStick_Right_Input)
+            {
+                Debug.Log("Lock On Right");
+                rightStick_Right_Input = false;
+                cameraHandler.HandleLockOn();
+                if (cameraHandler.rightLockTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
+                }
+            }
+
+            cameraHandler.SetCameraHeight();
         }
     }
 }

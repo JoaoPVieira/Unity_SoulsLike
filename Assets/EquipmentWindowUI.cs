@@ -11,32 +11,32 @@ namespace ST
         public bool leftHandSlot01Selected;
         public bool leftHandSlot02Selected;
 
-        HandEquipmentSlotUI[] handEquimentSlotUI;
+        public HandEquipmentSlotUI[] handEquipmentSlotUI;
 
-        private void Start()
+        private void Awake()
         {
-            handEquimentSlotUI = GetComponentsInChildren<HandEquipmentSlotUI>();
+            //handEquipmentSlotUI = GetComponentsInChildren<HandEquipmentSlotUI>();
         }
 
         public void LoadWeaponsOnEquipmentScreen(PlayerInventory playerInventory)
         {
-            for (int i = 0; i < handEquimentSlotUI.Length; i++)
+            for (int i = 0; i < handEquipmentSlotUI.Length; i++)
             {
-                if (handEquimentSlotUI[i].rightHandSlot01)
+                if (handEquipmentSlotUI[i].rightHandSlot01)
                 {
-                    handEquimentSlotUI[i].AddItem(playerInventory.weaponsInRightHandSlots[0]); 
+                    handEquipmentSlotUI[i].AddItem(playerInventory.weaponsInRightHandSlots[0]); 
                 }
-                else if (handEquimentSlotUI[i].rightHandSlot02)
+                else if (handEquipmentSlotUI[i].rightHandSlot02)
                 {
-                    handEquimentSlotUI[i].AddItem(playerInventory.weaponsInRightHandSlots[1]);
+                    handEquipmentSlotUI[i].AddItem(playerInventory.weaponsInRightHandSlots[1]);
                 }
-                else if (handEquimentSlotUI[i].leftHandSlot01)
+                else if (handEquipmentSlotUI[i].leftHandSlot01)
                 {
-                    handEquimentSlotUI[i].AddItem(playerInventory.weaponsInLeftHandSlots[0]);
+                    handEquipmentSlotUI[i].AddItem(playerInventory.weaponsInLeftHandSlots[0]);
                 }
                 else
                 {
-                    handEquimentSlotUI[i].AddItem(playerInventory.weaponsInLeftHandSlots[1]);
+                    handEquipmentSlotUI[i].AddItem(playerInventory.weaponsInLeftHandSlots[1]);
                 }
             }
         }
